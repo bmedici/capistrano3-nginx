@@ -1,3 +1,5 @@
+# <%= fetch(:nginx_config_filename) %> generated on <%= Time.now.to_s %>
+
 <% if fetch(:app_server) && (fetch(:app_server_socket) || fetch(:app_server_port))%>
 # Define App Server Upstream
 upstream <%= fetch(:application) %>-app-server {
