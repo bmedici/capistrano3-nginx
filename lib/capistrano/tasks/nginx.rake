@@ -6,6 +6,7 @@ namespace :load do
     set :nginx_root_path,           -> { "/etc/nginx" }
     set :nginx_service_path,        -> { 'service nginx' }
     set :nginx_static_dir,          -> { "public" }
+    set :nginx_config_filename,     -> { "#{fetch(:application)}.conf" }
     set :nginx_sites_enabled_dir,   -> { "sites-enabled" }
     set :nginx_sites_available_dir, -> { "sites-available" }
     set :nginx_roles,               -> { :web }
@@ -108,7 +109,8 @@ namespace :nginx do
           end
           config = ERB.new(File.read(config_file)).result(binding)
           upload! StringIO.new(config), '/tmp/nginx.conf'
-          arguments = :mv, '/tmp/nginx.conf', fetch(:application)
+#          arguments = :mv, '/tmp/nginx.conf', fetch(:nginx_config_filename)
+          arguments = :mv, '/tmp/nginx.conf', "dummy"
           add_sudo_if_required arguments, 'nginx:sites:add', :nginx_sites_available_dir
           execute *arguments
         end
